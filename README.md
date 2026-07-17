@@ -10,18 +10,18 @@
 
 ### Landing Page
 
-![Landing Page](screenshots/landing_page.png)
+![Landing Page](Screenshots/landing_page.png)
 
-![Landing Page Scroll](landing_pagescroll.png)
+![Landing Page Scroll](Screenshots/landing_pagescroll.png)
 
 ### Login / Signup
-![Login Page](login_page.png)
+![Login Page](Screenshots/login_page.png)
 
 ### Workout Tracker
-![Workout Tracker](main_page.png)
+![Workout Tracker](Screenshots/main_page.png)
 
 ### Analysis & Recommendations Dashboard
-![Analysis Dashboard](analysis_dashboard.png)
+![Analysis Dashboard](Screenshots/analysis_dashboard.png)
 
 ---
 
