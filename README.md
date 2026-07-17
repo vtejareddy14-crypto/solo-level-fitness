@@ -9,6 +9,7 @@
 ## 📸 Screenshots
 
 ### Landing Page
+
 ![Landing Page](landing_page.png)
 
 ![Landing Page Scroll](landing_pagescroll.png)
