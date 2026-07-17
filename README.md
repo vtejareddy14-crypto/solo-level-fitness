@@ -10,7 +10,7 @@
 
 ### Landing Page
 
-![Landing Page](landing_page.png)
+![Landing Page](screenshots/landing_page.png)
 
 ![Landing Page Scroll](landing_pagescroll.png)
 
