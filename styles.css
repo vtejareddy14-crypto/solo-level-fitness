@@ -1,0 +1,673 @@
+/* ===============================
+   SOLO LEVEL FITNESS – FULL CSS
+   =============================== */
+
+:root {
+  --bg: #050c14;
+  --panel: rgba(255,255,255,0.05);
+  --muted: #9fb0bd;
+  --accent1: #ff6b4a;
+  --accent2: #ffc857;
+  --font-title: "Orbitron", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* GLOBAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-title);
+}
+button {
+  cursor: pointer;
+  border: none;
+}
+
+/* BUTTONS */
+.btn-primary, .btn-cta, .btn-grad {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 12px 24px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.btn-primary:hover, .btn-cta:hover, .btn-grad:hover {
+  transform: scale(1.05);
+}
+
+/* HEADER (shared) */
+.landing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.badge {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+.brand-title {
+  font-family: var(--font-title);
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+}
+
+/* ======================================
+   LANDING PAGE (Cult.fit-inspired)
+   ====================================== */
+
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 100px 10%;
+  gap: 40px;
+}
+.hero-text {
+  flex: 1;
+  max-width: 500px;
+}
+.hero-text h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.accent {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-text p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+.hero-img {
+  flex: 1;
+}
+.hero-img img {
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+
+/* FEATURES */
+.features {
+  padding: 80px 10%;
+  text-align: center;
+}
+.section-title {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.feature-card {
+  background: var(--panel);
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.feature-card img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.feature-card h3 {
+  margin: 16px 0 8px;
+}
+.feature-card p {
+  color: var(--muted);
+  padding: 0 16px 24px;
+}
+
+/* AD BANNERS */
+.ad-banner {
+  position: relative;
+  height: 65vh;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ad-overlay {
+  background: rgba(0, 0, 0, 0.55);
+  padding: 50px 70px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 700px;
+}
+.ad-overlay h2 {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.ad-overlay p {
+  color: var(--muted);
+}
+
+/* CTA SECTION */
+.cta-section {
+  text-align: center;
+  padding: 100px 20px;
+  background: radial-gradient(circle at top left, #0b1624, #050c14 80%);
+}
+.cta-section h2 {
+  font-family: var(--font-title);
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+.cta-section p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  background: #03080e;
+}
+
+/* ======================================
+   LOGIN / SIGNUP PAGE
+   ====================================== */
+
+.auth-body {
+  background: radial-gradient(circle at top, #080f1c, #050c14);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.auth-wrapper {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 40px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+.title {
+  text-align: center;
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+}
+.subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  background: var(--panel);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.toggle {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+}
+.toggle.active {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+}
+.form {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+.form.visible {
+  display: flex;
+}
+.form input {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  padding: 12px 14px;
+  color: #fff;
+  border-radius: 8px;
+}
+.form input:focus {
+  outline: 2px solid var(--accent1);
+}
+.verify-box {
+  display: none;
+  text-align: center;
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+/* ======================================
+   DASHBOARD PAGE
+   ====================================== */
+
+.dashboard-body {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.dash-header {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(8px);
+}
+.dash-header .logo {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+}
+.user-menu {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.dashboard-container {
+  flex: 1;
+  display: flex;
+  height: 100%;
+}
+
+.sidebar {
+  width: 220px;
+  background: #08111f;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+.nav-btn {
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  padding: 14px 20px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+.nav-btn:hover, .nav-btn.active {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+.page {
+  display: none;
+}
+.page.visible {
+  display: block;
+}
+
+.card {
+  background: var(--panel);
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+.muted {
+  color: var(--muted);
+}
+.workout-card {
+  margin-bottom: 14px;
+}
+
+/* PROGRESS CHART */
+#progressChart {
+  width: 100%;
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-img img {
+    max-width: 80%;
+  }
+  .landing-header {
+    padding: 16px 24px;
+  }
+  .dashboard-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+}
+
+body.auth-body {
+  background: #0b0e13;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.auth-wrapper {
+  background: #141821;
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  width: 350px;
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.toggle-row {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.toggle {
+  flex: 1;
+  padding: 10px;
+  background: #1c1f27;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  transition: background 0.3s;
+}
+
+.toggle.active {
+  background: linear-gradient(90deg, #ff6b4a, #ffc247);
+  color: #000;
+}
+
+.form {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form.visible {
+  display: flex;
+}
+
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1f2430;
+  color: #fff;
+}
+
+input::placeholder {
+  color: #777;
+}
+
+.btn-grad {
+  background: linear-gradient(90deg, #ff6b4a, #ffc247);
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.btn-grad:hover {
+  opacity: 0.9;
+}
+/* ==========================
+   SOLO LEVEL FITNESS — UI FIX
+   ========================== */
+
+/* Fix Logout button alignment */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#logout {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+#logout:hover {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+}
+
+/* User badge */
+.user-menu {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  min-width: 100px;
+  text-align: center;
+}
+
+/* Sidebar adjustments */
+.sidebar {
+  width: 230px;
+  background: #0a101b;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+.nav-btn.active {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #050c14;
+  font-weight: 600;
+}
+
+/* Main content padding fix */
+.main-content {
+  padding: 40px 60px;
+}
+
+/* Cards: smoother color & spacing */
+.card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* Form input polish */
+.form-col input {
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+}
+.form-col input:focus {
+  outline: 2px solid var(--accent1);
+}
+
+/* Buttons in forms */
+.btn-grad, .btn-ghost {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.btn-ghost {
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--muted);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Recent workouts styling */
+.recent-row {
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+.recent-row:hover {
+  background: rgba(255,255,255,0.08);
+}
+.recent-row strong {
+  display: block;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+/* Progress chart container fix */
+#progressChart, #muscleChart {
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+/* Analysis table */
+.analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.analysis-table th, .analysis-table td {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 10px;
+  text-align: left;
+}
+.analysis-table th {
+  color: var(--accent2);
+  text-transform: uppercase;
+}
+.analysis-table tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Account form layout */
+#profileForm .row {
+  display: flex;
+  gap: 12px;
+}
+#profileForm .btn-grad {
+  flex: 1;
+}
+
+/* Better mobile scaling */
+@media (max-width: 900px) {
+  .main-content { padding: 20px; }
+  .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+}
+/* ===== Fix for overlapping dropdown issue ===== */
+#selectedExercise {
+  position: relative;
+  z-index: 10;
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 1rem;
+}
+
+#selectedExercise:focus {
+  outline: none;
+  border-color: #ff6b4a;
+}
+
+/* Make dropdown list visible and above other layers */
+select,
+select option {
+  z-index: 9999 !important;
+  position: relative;
+}
+

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — Solo Level Fitness</title>
+
+  <!-- Fonts + CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Firebase (compat) - required -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Leaflet map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+  <style>
+    /* Minimal inline styles to ensure charts & map have size */
+    #mapPreview { height: 300px; border-radius: 8px; background:#f6f6f6; }
+    .header-right { display:flex; align-items:center; gap:12px; }
+    .quick-input { display:flex; gap:6px; align-items:center; }
+    .muted { color:#8a8a8a; }
+    .recent-row { padding:8px 0; border-bottom:1px solid #eee; }
+    .target-row, .achievement { padding:6px 8px; border-radius:8px; background:#fafafa; margin:6px 0; }
+    .analysis-table { width:100%; border-collapse: collapse; }
+    .analysis-table th, .analysis-table td { padding:8px; border:1px solid #eee; text-align:left; }
+  </style>
+</head>
+<body class="dashboard-body">
+  <header class="dash-header">
+    <div class="logo">Solo Level Fitness</div>
+    <div class="header-right">
+      <div class="stat-block">
+        <small>Total Minutes</small>
+        <strong id="totalMinutes">0</strong>
+      </div>
+      <div class="stat-block">
+        <small>Sessions</small>
+        <strong id="totalSessions">0</strong>
+      </div>
+
+      <!-- QUICK WEIGHT & STEPS (top controls requested) -->
+      <div class="quick-input" title="Quick add weight">
+        <input id="quickWeight" type="number" placeholder="kg" style="width:72px;padding:6px;border-radius:6px;border:1px solid #ddd" />
+        <button id="addQuickWeight" class="btn-ghost" style="padding:6px 8px">Add weight</button>
+      </div>
+      <div class="quick-input" title="Add steps for today">
+        <input id="quickSteps" type="number" placeholder="steps" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd" />
+        <button id="addQuickSteps" class="btn-ghost" style="padding:6px 8px">Add steps</button>
+      </div>
+
+      <div id="badgeArea" class="badge-area" title="Your active badges"></div>
+      <div id="userMenu" class="user-menu">My Account</div>
+      <button id="logout" class="btn-ghost">Logout</button>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <nav>
+        <button class="nav-btn active" data-page="workouts">🏋️ Workouts</button>
+        <button class="nav-btn" data-page="progress">📈 Progress</button>
+        <button class="nav-btn" data-page="analysis">📊 Analysis</button>
+        <button class="nav-btn" data-page="account">👤 My Account</button>
+      </nav>
+
+      <div class="sidebar-footer">Solo Level Fitness</div>
+    </aside>
+
+    <main class="main-content">
+      <!-- WORKOUTS PAGE -->
+      <section id="workouts" class="page visible">
+        <div class="page-head">
+          <h1>Workout Tracker</h1>
+          <p class="muted">Select exercises, save sessions, track runs and build streaks.</p>
+        </div>
+
+        <div class="card">
+          <div class="workout-row">
+            <div class="lib" style="flex:1;min-width:240px;margin-right:18px">
+              <h3>Exercise Library</h3>
+              <div class="lib-desc muted">Loaded from dataset. Choose from the dropdown.</div>
+              <div id="exerciseGrid" class="exercise-grid" style="display:none"></div>
+            </div>
+
+            <div class="session-panel" style="flex:1;min-width:300px">
+              <h3>Create Session</h3>
+              <form id="workoutForm" class="form-col">
+                <select id="selectedExercise" required>
+                  <option value="">— Select exercise —</option>
+                </select>
+
+                <div class="row" style="display:flex;gap:8px;margin-top:8px">
+                  <input id="sets" type="number" placeholder="Sets" min="0" style="flex:1" />
+                  <input id="reps" type="number" placeholder="Reps" min="0" style="flex:1"/>
+                  <input id="duration" type="number" placeholder="Duration (min)" min="0" style="flex:1"/>
+                </div>
+
+                <div class="row" style="margin-top:8px">
+                  <button type="submit" class="btn-grad">Save Session</button>
+                  <button id="clearSelection" type="button" class="btn-ghost">Clear</button>
+                </div>
+              </form>
+
+              <hr/>
+
+              <h4>Run / Walk Tracker</h4>
+              <div class="run-controls">
+                <button id="startRun" class="btn-grad">Start Run</button>
+                <button id="stopRun" class="btn-ghost">Stop</button>
+                <button id="saveRun" class="btn-grad">Save Run</button>
+                <div id="runStats" class="muted run-stats">Dist: 0.00 km • Dur: 0 min • Cal: 0 kcal</div>
+              </div>
+              <div id="mapPreview" class="muted" style="margin-top:8px"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="workoutList" class="card mt">
+          <h3>Recent Workouts</h3>
+          <div id="workoutsContainer" class="recent-list muted">Loading...</div>
+        </div>
+      </section>
+
+      <!-- PROGRESS -->
+      <section id="progress" class="page">
+        <div class="page-head">
+          <h1>Progress Overview</h1>
+          <p class="muted">Calories per day, weight & steps history</p>
+        </div>
+
+        <div class="card">
+          <canvas id="progressChart" height="160"></canvas>
+        </div>
+
+        <div class="card mt" style="display:flex;gap:16px;flex-wrap:wrap">
+          <div style="flex:1;min-width:280px">
+            <h3>Weight History</h3>
+            <canvas id="weightChart" height="140"></canvas>
+          </div>
+          <div style="flex:1;min-width:280px">
+            <h3>Steps per day</h3>
+            <canvas id="stepsChart" height="140"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANALYSIS -->
+      <section id="analysis" class="page">
+        <div class="page-head">
+          <h1>Analysis & Recommendations</h1>
+          <p class="muted">Compare your training to the dataset and get guidance.</p>
+        </div>
+
+        <div id="analysisContent" class="card">
+          <div class="muted">Computing analysis...</div>
+        </div>
+
+        <div id="communityComparison" class="card mt"></div>
+      </section>
+
+      <!-- ACCOUNT -->
+      <section id="account" class="page">
+        <div class="page-head">
+          <h1>My Account</h1>
+        </div>
+
+        <div class="card">
+          <form id="profileForm" class="form-col">
+            <input id="profName" placeholder="Full name" />
+            <input id="profEmail" placeholder="Email" disabled />
+            <div class="row">
+              <input id="profWeight" placeholder="Weight (kg)" type="number" />
+              <input id="profHeight" placeholder="Height (cm)" type="number" />
+            </div>
+            <div class="row" style="margin-top:8px">
+              <input id="weeklyTarget" placeholder="Weekly kcal target" type="number" />
+            </div>
+            <div class="row" style="margin-top:8px">
+              <button id="saveProfile" type="button" class="btn-grad">Save profile</button>
+              <button id="deleteAccount" type="button" class="btn-ghost danger">Delete account</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card mt">
+          <h3>Saved Sessions</h3>
+          <div id="sessionList" class="muted">Loading...</div>
+        </div>
+
+        <div class="card mt">
+          <h3>Targets</h3>
+          <div id="targetcontainer" class="muted">Loading...</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <select id="targetType">
+              <option value="">Select target</option>
+              <option value="Calories">Calories</option>
+              <option value="Running">Running</option>
+              <option value="Weight">Weight</option>
+            </select>
+            <input id="targetValue" placeholder="Value" type="number" />
+            <select id="targetUnit">
+              <option value="kcal">kcal</option>
+              <option value="km">km</option>
+              <option value="kg">kg</option>
+            </select>
+            <button id="saveTarget" class="btn-grad">Save Target</button>
+          </div>
+        </div>
+
+        <div class="card mt">
+          <h3>Achievements</h3>
+          <div id="achievementsContainer" class="muted">Loading...</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+
+  <script src="app.js"></script>
+</body>
+</html>

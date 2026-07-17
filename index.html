@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solo Level Fitness</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body class="landing-body">
+
+  <!-- HEADER -->
+  <header class="landing-header">
+    <div class="brand">
+      <div class="badge">SL</div>
+      <div class="brand-title">Solo Level Fitness</div>
+    </div>
+    <nav>
+      <a href="login.html" class="btn-primary">Login / Signup</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="hero-text">
+      <h1>Train Smart. <span class="accent">Level Up.</span></h1>
+      <p>Your AI-powered fitness tracker — plan workouts, track performance, and compare your progress using real-world data.</p>
+      <a href="login.html" class="btn-cta">Get Started</a>
+    </div>
+    <div class="hero-img">
+      <img src="assets/hero01.jpg" alt="Hero" />
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2 class="section-title">Why Choose Us</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <img src="assets/ad1.jpg" alt="Workout" />
+        <h3>Dynamic Workouts</h3>
+        <p>Choose from hundreds of AI-curated exercises based on your fitness level and goals.</p>
+      </div>
+      <div class="feature-card">
+        <img src="assets/ad2.jpg" alt="Tracking" />
+        <h3>Live Tracking</h3>
+        <p>Monitor your runs, calories, and heart rate using built-in GPS and smart analytics.</p>
+      </div>
+      <div class="feature-card">
+        <img src="assets/hero01.jpg" alt="Analysis" />
+        <h3>Smart Analytics</h3>
+        <p>View progress charts, compare with Kaggle fitness data, and track your transformation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AD BANNERS -->
+  <section class="ad-banner" style="background-image:url('assets/ad1.jpg')">
+    <div class="ad-overlay">
+      <h2>Push Your Limits</h2>
+      <p>Train like never before with custom programs built just for you.</p>
+    </div>
+  </section>
+
+  <section class="ad-banner" style="background-image:url('assets/ad2.jpg')">
+    <div class="ad-overlay">
+      <h2>Run Beyond Boundaries</h2>
+      <p>Track every kilometer, monitor progress, and level up each week.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to Begin?</h2>
+    <p>Join thousands of users on their transformation journey with Solo Level Fitness.</p>
+    <a href="login.html" class="btn-cta">Join Now</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">© 2025 Solo Level Fitness — All Rights Reserved</footer>
+
+  <!-- Animations -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".hero-text h1", {y:30, opacity:0, duration:1});
+    gsap.from(".hero-text p", {y:20, opacity:0, delay:0.3});
+    gsap.from(".hero-img img", {x:50, opacity:0, duration:1.2});
+
+    gsap.utils.toArray(".feature-card").forEach((card) => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: "top 85%" },
+        y: 40, opacity: 0, duration: 0.8
+      });
+    });
+
+    gsap.utils.toArray(".ad-overlay").forEach((overlay) => {
+      gsap.from(overlay, {
+        scrollTrigger: { trigger: overlay, start: "top 80%" },
+        y: 30, opacity: 0, duration: 1
+      });
+    });
+
+    gsap.from(".cta-section h2", {
+      scrollTrigger: { trigger: ".cta-section", start: "top 85%" },
+      y: 30, opacity: 0, duration: 0.8
+    });
+  </script>
+
+</body>
+</html>

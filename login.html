@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login / Signup — Solo Level Fitness</title>
+
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+
+<body class="auth-body">
+  <div class="auth-wrapper">
+    <h1 class="title">Solo Level Fitness</h1>
+    <p class="subtitle">Login or Create an Account</p>
+
+    <!-- Toggle -->
+    <div class="toggle-row">
+      <button id="toggleLogin" class="toggle active">Login</button>
+      <button id="toggleSignup" class="toggle">Signup</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" class="form visible">
+      <input id="loginEmail" type="email" placeholder="Email" required>
+      <input id="loginPass" type="password" placeholder="Password" required>
+      <button type="submit" class="btn-grad">Login</button>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signupForm" class="form">
+      <input id="signupName" type="text" placeholder="Full Name" required>
+      <input id="signupEmail" type="email" placeholder="Email" required>
+      <input id="signupPass" type="password" placeholder="Password (6+)" required>
+      <input id="signupPass2" type="password" placeholder="Re-enter Password" required>
+      <button type="submit" class="btn-grad">Create Account</button>
+    </form>
+  </div>
+
+  <script>
+    /* =======================================================
+       app.js - Solo Level Fitness (Simplified Auth)
+       ======================================================= */
+
+    // 1. Firebase Init
+    const firebaseConfig = {
+      apiKey: "AIzaSyCqTXKToAUzVIfapWLFa9v9t8VsokQE_1A",
+      authDomain: "projectfinal-f6f1a.firebaseapp.com",
+      projectId: "projectfinal-f6f1a",
+      storageBucket: "projectfinal-f6f1a.appspot.com",
+      messagingSenderId: "983765421377",
+      appId: "1:983765421377:web:db5f9ad41b40c760d525c0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    // 🔔 Toast Notification System
+function showNotification(message, type = "success") {
+  let note = document.createElement("div");
+  note.className = `notif ${type}`;
+  note.textContent = message;
+  document.body.appendChild(note);
+  setTimeout(() => note.classList.add("visible"), 50);
+  setTimeout(() => {
+    note.classList.remove("visible");
+    setTimeout(() => note.remove(), 400);
+  }, 3000);
+}
+
+// CSS for toast
+const notifStyle = document.createElement("style");
+notifStyle.textContent = `
+.notif {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: linear-gradient(90deg, #ff6b4a, #ffc857);
+  color: #050c14;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.2);
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+.notif.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+.notif.error {
+  background: linear-gradient(90deg, #ff3b3b, #ff6b4a);
+}`;
+document.head.appendChild(notifStyle);
+
+
+    // 2. Helper
+    const $ = (s) => document.querySelector(s);
+
+    // 3. Toggle Logic
+    const toggleLoginBtn = $("#toggleLogin");
+    const toggleSignupBtn = $("#toggleSignup");
+    const loginFormEl = $("#loginForm");
+    const signupFormEl = $("#signupForm");
+
+    function showLogin() {
+      toggleLoginBtn.classList.add("active");
+      toggleSignupBtn.classList.remove("active");
+      loginFormEl.classList.add("visible");
+      signupFormEl.classList.remove("visible");
+    }
+
+    function showSignup() {
+      toggleSignupBtn.classList.add("active");
+      toggleLoginBtn.classList.remove("active");
+      signupFormEl.classList.add("visible");
+      loginFormEl.classList.remove("visible");
+    }
+
+    toggleLoginBtn?.addEventListener("click", showLogin);
+    toggleSignupBtn?.addEventListener("click", showSignup);
+    showLogin();
+
+    // 4. Signup
+    signupFormEl?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = $("#signupName").value.trim();
+      const email = $("#signupEmail").value.trim();
+      const pass = $("#signupPass").value;
+      const pass2 = $("#signupPass2").value;
+      const btn = signupFormEl.querySelector("button");
+
+      if (pass !== pass2) return showNotification("⚠️ Passwords do not match!");
+
+      btn.disabled = true;
+      btn.textContent = "Creating account...";
+
+      try {
+        const methods = await auth.fetchSignInMethodsForEmail(email);
+        if (methods.length > 0) {
+          showNotification("⚠️ Email already registered. Please log in instead.");
+          showLogin();
+          btn.disabled = false;
+          btn.textContent = "Create Account";
+          return;
+        }
+
+        const cred = await auth.createUserWithEmailAndPassword(email, pass);
+        const user = cred.user;
+        await user.updateProfile({ displayName: name });
+
+        await db.collection("users").doc(user.uid).set({
+          name,
+          email,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        showNotification("✅ Account created successfully! Redirecting...");
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
+      } catch (err) {
+        console.error(err);
+        showNotification("Signup failed: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Create Account";
+      }
+    });
+
+    // 5. Login
+    loginFormEl?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = $("#loginEmail").value.trim();
+      const pass = $("#loginPass").value;
+      const btn = loginFormEl.querySelector("button");
+
+      btn.disabled = true;
+      btn.textContent = "Logging in...";
+
+      try {
+        const cred = await auth.signInWithEmailAndPassword(email, pass);
+        if (cred.user) {
+          showNotification("✅ Login successful!");
+          setTimeout(() => window.location.href = "dashboard.html", 1000);
+
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.code === "auth/user-not-found")
+          ("❌ No account found. Please sign up first.");
+        else if (err.code === "auth/wrong-password")
+          showNotification("Incorrect password. Try again.");
+        else showNotification("Login failed: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Login";
+      }
+    });
+  </script>
+</body>
+</html>
