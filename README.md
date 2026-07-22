@@ -27,15 +27,22 @@
 
 ## 📌 Project Overview
 
-Solo Level Fitness is a full-stack web application built with HTML, CSS, JavaScript and Firebase. It allows users to log workouts, track runs using GPS, monitor progress and compare their muscle training split against an ideal balanced ratio using a real Kaggle gym exercise dataset.
+Solo Level Fitness is a full-stack fitness tracking web application built using HTML, CSS, JavaScript, and Firebase. The application allows users to authenticate securely, log workouts, track running activities using GPS, monitor fitness progress, and analyze muscle balance using real-world Kaggle fitness datasets. Firebase serves as the cloud backend for user authentication and real-time data storage.
 
 ---
 
 ## ✨ Features
 
 **🔐 Authentication**
-- Login and Signup with Firebase Authentication
-- Per-user data stored and synced with Firebase Firestore
+- Secure Login and Signup using Firebase Authentication
+- User-specific workout and fitness data stored in Firebase Firestore
+- Cloud synchronization enables persistent data across sessions
+  
+**☁️ Cloud Backend**
+- Firebase Firestore used as cloud database
+- Stores workout history, run sessions, and user progress
+- Real-time synchronization across sessions
+- Secure per-user data management
 
 **💪 Workout Tracker**
 - Exercise library loaded from Kaggle gym dataset (500+ exercises)
@@ -110,9 +117,39 @@ Or just visit the live site: [sololevelfitness.netlify.app](https://sololevelfit
 
 ---
 
+## 🏗️ System Architecture
+
+Browser
+   │
+   ▼
+HTML / CSS / JavaScript
+   │
+   ├── Firebase Authentication
+   │
+   ├── Firebase Firestore (Cloud Storage)
+   │
+   ├── Leaflet.js + OpenStreetMap
+   │
+   └── Kaggle Fitness Dataset
+
+   ## 🗄️ Database
+
+The application uses **Firebase Firestore** as its cloud database.
+
+Collections include:
+
+- Users
+- Workouts
+- Running Sessions
+- Progress History
+
+Each user's fitness data is securely isolated using Firebase Authentication.
+
 ## 🏷️ Tech Stack
 
-`HTML5` `CSS3` `JavaScript (ES6+)` `Firebase Authentication` `Firebase Firestore` `Firebase Realtime Database` `Leaflet.js` `GPS Geolocation API` `OpenStreetMap` `Kaggle Dataset` `Netlify` `Responsive Design` `CSV Parsing` `XLSX Data` `DOM Manipulation` `Local Storage` `Fetch API`
+`HTML5` `CSS3` `JavaScript (ES6+)` `Firebase Authentication` `Firebase Firestore` `Firebase Realtime Database` `Leaflet.js` `GPS Geolocation API` `OpenStreetMap` `Kaggle Dataset` `Netlify` `Responsive Design` `CSV Parsing` `XLSX Data` `DOM Manipulation` `Local Storage` `Fetch API``Firebase Authentication`
+`Firebase Firestore`
+`Firebase Realtime Database`
 
 ---
 
